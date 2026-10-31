@@ -1,0 +1,246 @@
+name: ROWA Premium Launcher APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/build.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Install Android SDK packages
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Generate Android project
+        shell: bash
+        run: |
+          mkdir -p app/src/main/java/com/rowa/premiumlauncher
+
+          cat > settings.gradle <<'EOF'
+          pluginManagement {
+              repositories { google(); mavenCentral(); gradlePluginPortal() }
+          }
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+              repositories { google(); mavenCentral() }
+          }
+          rootProject.name = "ROWAPremiumLauncher"
+          include(":app")
+          EOF
+
+          cat > build.gradle <<'EOF'
+          plugins {
+              id 'com.android.application' version '8.7.3' apply false
+          }
+          EOF
+
+          cat > gradle.properties <<'EOF'
+          org.gradle.jvmargs=-Xmx2g -Dfile.encoding=UTF-8
+          android.useAndroidX=true
+          android.nonTransitiveRClass=true
+          EOF
+
+          cat > app/build.gradle <<'EOF'
+          plugins { id 'com.android.application' }
+
+          android {
+              namespace 'com.rowa.premiumlauncher'
+              compileSdk 35
+
+              defaultConfig {
+                  applicationId 'com.rowa.premiumlauncher'
+                  minSdk 23
+                  targetSdk 28
+                  versionCode 1
+                  versionName '0.1.0'
+              }
+
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+          }
+          EOF
+
+          cat > app/src/main/AndroidManifest.xml <<'EOF'
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-feature android:name="android.software.leanback" android:required="false"/>
+              <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
+              <application android:allowBackup="true" android:label="ROWA Premium" android:theme="@android:style/Theme.Material.NoActionBar"> <activity android:name=".MainActivity" android:exported="true" android:screenOrientation="landscape"> <intent-filter> <action android:name="android.intent.action.MAIN"/> <category android:name="android.intent.category.LAUNCHER"/> <category android:name="android.intent.category.LEANBACK_LAUNCHER"/> <category android:name="android.intent.category.HOME"/> <category android:name="android.intent.category.DEFAULT"/> </intent-filter> </activity> </application>
+          </manifest>
+          EOF
+
+          cat > app/src/main/java/com/rowa/premiumlauncher/MainActivity.java <<'EOF'
+          package com.rowa.premiumlauncher;
+
+          import android.app.Activity;
+          import android.os.Bundle;
+          import android.content.Intent;
+          import android.graphics.Color;
+          import android.graphics.Typeface;
+          import android.graphics.drawable.GradientDrawable;
+          import android.view.Gravity;
+          import android.view.View;
+          import android.widget.LinearLayout;
+          import android.widget.ScrollView;
+          import android.widget.TextView;
+          import android.widget.Toast;
+          import java.text.SimpleDateFormat;
+          import java.util.Date;
+          import java.util.Locale;
+
+          public class MainActivity extends Activity {
+              private final int BG = Color.rgb(8, 12, 22);
+              private final int PANEL = Color.rgb(24, 34, 52);
+              private final String[] names = {"Netflix", "YouTube", "Prime Video", "IPTV"};
+              private final String[] packages = {
+                  "com.netflix.ninja",
+                  "com.google.android.youtube.tv",
+                  "com.amazon.amazonvideo.livingroom",
+                  ""
+              };
+
+              private GradientDrawable rounded(int color, int radius) {
+                  GradientDrawable d = new GradientDrawable();
+                  d.setColor(color);
+                  d.setCornerRadius(radius);
+                  return d;
+              }
+
+              private TextView label(String value, int size, int color, boolean bold) {
+                  TextView t = new TextView(this);
+                  t.setText(value);
+                  t.setTextSize(size);
+                  t.setTextColor(color);
+                  if (bold) t.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                  return t;
+              }
+
+              @Override public void onCreate(Bundle state) {
+                  super.onCreate(state);
+                  getWindow().getDecorView().setSystemUiVisibility(
+                      View.SYSTEM_UI_FLAG_FULLSCREEN |
+                      View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                      View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                  );
+
+                  LinearLayout page = new LinearLayout(this);
+                  page.setOrientation(LinearLayout.VERTICAL);
+                  page.setPadding(42, 28, 42, 28);
+                  page.setBackgroundColor(BG);
+
+                  ScrollView scroll = new ScrollView(this);
+                  scroll.setFillViewport(true);
+                  scroll.addView(page);
+                  setContentView(scroll);
+
+                  TextView top = label("ROWA / PREMIUM", 20, Color.WHITE, true);
+                  page.addView(top);
+
+                  TextView clock = label(
+                      new SimpleDateFormat("EEEE, dd MMMM • hh:mm a", Locale.getDefault()).format(new Date()),
+                      16, 0xffcbd5e1, false
+                  );
+                  LinearLayout.LayoutParams cp = new LinearLayout.LayoutParams(-1, -2);
+                  cp.topMargin = 8;
+                  page.addView(clock, cp);
+
+                  TextView hero = label("YOUR CINEMATIC HOME", 14, 0xffa8c5ff, true);
+                  hero.setPadding(0, 34, 0, 10);
+                  page.addView(hero);
+
+                  TextView feature = label("Discover something great tonight", 30, Color.WHITE, true);
+                  feature.setPadding(24, 28, 24, 12);
+                  feature.setBackground(rounded(0xff172943, 22));
+                  page.addView(feature, new LinearLayout.LayoutParams(-1, 190));
+
+                  TextView subtitle = label(
+                      "Premium dark interface • Built for your ROWA Google TV",
+                      15, 0xffcbd5e1, false
+                  );
+                  subtitle.setPadding(24, 0, 24, 22);
+                  subtitle.setBackground(rounded(0xff172943, 22));
+                  page.addView(subtitle);
+
+                  TextView appsTitle = label("YOUR APPS", 15, 0xffa8c5ff, true);
+                  LinearLayout.LayoutParams st = new LinearLayout.LayoutParams(-1, -2);
+                  st.topMargin = 28;
+                  page.addView(appsTitle, st);
+
+                  for (int i = 0; i < names.length; i++) {
+                      final int index = i;
+                      TextView app = label(names[i], 19, Color.WHITE, true);
+                      app.setGravity(Gravity.CENTER_VERTICAL);
+                      app.setPadding(22, 16, 22, 16);
+                      app.setBackground(rounded(PANEL, 16));
+                      app.setFocusable(true);
+                      app.setClickable(true);
+                      LinearLayout.LayoutParams ap = new LinearLayout.LayoutParams(-1, 66);
+                      ap.topMargin = 10;
+                      page.addView(app, ap);
+                      app.setOnClickListener(v -> openApp(index));
+                      app.setOnFocusChangeListener((v, focused) -> {
+                          v.setAlpha(focused ? 1.0f : 0.82f);
+                          v.setScaleX(focused ? 1.02f : 1.0f);
+                          v.setScaleY(focused ? 1.02f : 1.0f);
+                      });
+                  }
+
+                  TextView recent = label("RECENTLY OPENED\nNo apps opened from this launcher yet.", 15, 0xffd3dbea, false);
+                  recent.setPadding(20, 22, 20, 22);
+                  recent.setBackground(rounded(PANEL, 16));
+                  LinearLayout.LayoutParams rp = new LinearLayout.LayoutParams(-1, -2);
+                  rp.topMargin = 26;
+                  page.addView(recent, rp);
+
+                  TextView footer = label(
+                      "Weather and automatic movie artwork will be added in a later build.",
+                      13, 0xff93a4bd, false
+                  );
+                  footer.setPadding(4, 24, 4, 8);
+                  page.addView(footer);
+              }
+
+              private void openApp(int index) {
+                  if (packages[index].isEmpty()) {
+                      Toast.makeText(this, "Install an IPTV player to use this shortcut.", Toast.LENGTH_LONG).show();
+                      return;
+                  }
+                  Intent launch = getPackageManager().getLaunchIntentForPackage(packages[index]);
+                  if (launch == null) {
+                      Toast.makeText(this, names[index] + " is not installed.", Toast.LENGTH_SHORT).show();
+                  } else {
+                      startActivity(launch);
+                  }
+              }
+          }
+          EOF
+
+      - name: Build debug APK
+        run: gradle --no-daemon assembleDebug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ROWA-Premium-Launcher-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error

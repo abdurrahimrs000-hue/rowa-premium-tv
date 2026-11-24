@@ -1,0 +1,47 @@
+#EXTM3U
+#PLAYLIST:ROWA Sports + Movies (Public Free Streams)
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
+#NOTE: Curated public/ad-supported streams only. No unauthorized paid-channel feeds.
+#NOTE: Resolution labels are based on public playlist metadata where available. Actual resolution, FPS, geo-access and uptime may vary by region/device; 30 FPS/HDR10 is not independently guaranteed.
+
+#EXTINF:-1 group-title="Sports" tvg-name="FIFA+ English",FIFA+ English (adaptive)
+https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8
+#EXTINF:-1 group-title="Sports" tvg-name="FIFA+ Women",FIFA+ Women (adaptive)
+https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8
+#EXTINF:-1 group-title="Sports" tvg-name="Red Bull TV",Red Bull TV (adaptive)
+https://e7c8f7d5.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWdiX1JlZEJ1bGxUVi0xX0hMUw/playlist.m3u8
+#EXTINF:-1 group-title="Sports" tvg-name="Motorsport.tv",Motorsport.tv (adaptive)
+https://25dee28f.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X01vdG9yc3BvcnR0di0xX0hMUw/playlist.m3u8
+#EXTINF:-1 group-title="Sports" tvg-name="beIN Sports XTRA",beIN Sports XTRA (1080p listed)
+https://bein-esp-xumo.amagi.tv/playlistR1080p.m3u8
+#EXTINF:-1 group-title="Sports" tvg-name="SportsGrid",SportsGrid (1080p listed)
+https://sportsgrid-tribal.amagi.tv/playlist1080p.m3u8
+#EXTINF:-1 group-title="Sports" tvg-name="World of Freesports",World of Freesports (1080p listed)
+https://rakutenaa-mainstreammediafreesportsintl-rakuten-t7dc0.amagi.tv/playlist/rakutenAA-mainstreammediafreesportsintl-rakuten/playlist.m3u8
+#EXTINF:-1 group-title="Sports" tvg-name="World Poker Tour",World Poker Tour (1080p listed)
+https://d39g1vxj2ef6in.cloudfront.net/v1/manifest/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod-rakuten-stitched/15d59f2f-80da-4448-9bce-775cc9f470f7/1.m3u8
+#EXTINF:-1 group-title="Sports" tvg-name="FUEL TV",FUEL TV (adaptive)
+https://amg01074-fueltv-fueltvemeaen-rakuten-b6j62.amagi.tv/hls/amagi_hls_data_rakutenAA-fueltvemeaen/CDN/master.m3u8
+
+#EXTINF:-1 group-title="Movies" tvg-name="MovieSphere",MovieSphere (1080p listed)
+https://moviesphere-plex.amagi.tv/playlist.m3u8
+#EXTINF:-1 group-title="Movies" tvg-name="Crackle",Crackle (adaptive)
+https://crackle-plex.amagi.tv/playlist.m3u8
+#EXTINF:-1 group-title="Movies" tvg-name="IFC Films Picks",IFC Films Picks (1080p listed)
+https://amc-ifc-films-picks-1.imdbtv.wurl.com/manifest/playlist.m3u8
+#EXTINF:-1 group-title="Movies" tvg-name="RunTime",RunTime (1080p listed)
+https://ammoruntime-plex.amagi.tv/playlist.m3u8
+#EXTINF:-1 group-title="Movies" tvg-name="Rush by AMC",Rush by AMC (1080p listed)
+https://amc-rushbyamc-1.imdbtv.wurl.com/manifest/playlist.m3u8
+#EXTINF:-1 group-title="Movies" tvg-name="Bloody Disgusting",Bloody Disgusting (1080p listed)
+https://bloodydisgusting-ingest-roku-us.cinedigm.com/playlist.m3u8
+#EXTINF:-1 group-title="Movies" tvg-name="Bollywood HD",Bollywood HD (1080p listed)
+https://sc.id-tv.kz/bollywood_hd.m3u8
+#EXTINF:-1 group-title="Movies" tvg-name="Weyyak Action",Weyyak Action (1080p listed)
+https://weyyak-live.akamaized.net/weyyak_action/index.m3u8
+#EXTINF:-1 group-title="Movies" tvg-name="Rotana Cinema Egypt",Rotana Cinema Egypt (1080p listed)
+https://shls-rotanacinema-egy-prod-dub.shahid.net/out/v1/c39c0ecbcbdb46e890e91106776397a8/index.m3u8
+#EXTINF:-1 group-title="Movies" tvg-name="Rotana Cinema KSA",Rotana Cinema KSA (1080p listed)
+https://shls-rotanacinema-ksa-prod-dub.shahid.net/out/v1/6cee1c57ea7841e697eb15cefc98e0a6/index.m3u8
+#EXTINF:-1 group-title="Movies" tvg-name="Movie Kingdom",Movie Kingdom (720p listed)
+https://a.jsrdn.com/broadcast/e9b4093a41/+0000/c.m3u8
